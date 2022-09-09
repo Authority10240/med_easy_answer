@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:med_easy_answer/stock_chart/stock_charts/data/datasource/remote_datasouce/stock_chart_remote_data_source_implentation.dart';
 import 'package:med_easy_answer/stock_chart/stock_charts/data/datasource/remote_datasouce/stock_chart_remote_data_source.dart';
+import 'package:med_easy_answer/stock_chart/stock_charts/data/models/stock_data_model.dart';
+import 'package:med_easy_answer/stock_chart/stock_charts/domain/entities/stock_data.dart';
 import 'package:med_easy_answer/stock_chart/stock_charts/domain/repositories/stock_chart_repository.dart';
 import 'package:med_easy_answer/utilities/error/exception.dart';
 import 'package:med_easy_answer/utilities/error/failure.dart';
@@ -16,57 +18,21 @@ class StockChartRepositoryImplementation implements StockChartRepository{
 
   StockChartRepositoryImplementation({ required this.stockChartRemoteDataSourceImplementation,
       required this.networkInfo});
+
   @override
-  Future<Either<Failure, StockInfo>> getStockInfoUsingCompanyName(String companyName) async {
+  Future<Either<Failure, List<StockData>>> getStockInfo({required String symbol ,  required String period}) async {
+    List<StockData> stockDataList = [];
       try {
-        StockInfo stockChart = await stockChartRemoteDataSourceImplementation
-            .getStockInfoUsingCompanyName(companyName);
-        return Right(stockChart);
+        var jsonDataList = await  stockChartRemoteDataSourceImplementation.getStockInfo(symbol: symbol,period: period);
+        jsonDataList.forEach((stockData) {
+          stockDataList.add(StockDataModel.fromJson( stockData));
+        });
+        return Right(stockDataList);
       } on ServerException{
         return Left(ServerFailure());
       }
   }
 
-  @override
-  Future<Either<Failure, StockInfo>> getStockInfoUsingTicker(String ticker) async {
-    try{
-      StockInfo stockInfo = await stockChartRemoteDataSourceImplementation.
-      getStockInfoUsingTicker(ticker);
-      return Right(stockInfo);
-    }on ServerException{
-      return left(ServerFailure());
-    }
-  }
 
-  @override
-  Future<Either<Failure, StockQuote>> getStockPrice(StockInfo stockInfo) async{
-   try{
-     StockQuote stockQuote = await stockChartRemoteDataSourceImplementation.getStockPrice(stockInfo);
-     return Right(stockQuote);
-   } on ServerException{
-     return Left(ServerFailure());
-   }
-  }
-
-  @override
-  Future<Either<Failure, StockQuote>> getStockPriceChange(StockInfo stockInfo) async {
-    try{
-      StockQuote stockQuote = await stockChartRemoteDataSourceImplementation.getStockPriceChange(stockInfo);
-      return Right(stockQuote);
-
-    } on ServerException{
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, StockQuote>> getStockVolume(StockInfo stockInfo) async {
-    try{
-      StockQuote stockQuote = await stockChartRemoteDataSourceImplementation.getStockVolume(stockInfo);
-      return Right(stockQuote);
-    } on ServerException{
-      return Left(ServerFailure());
-    }
-  }
 
 }

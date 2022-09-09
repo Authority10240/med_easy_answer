@@ -26,17 +26,22 @@ dependencies:
 
   provider: 6.0.3
   get_it: 7.2.0
-  http: 0.13.5
+  dio: ^4.0.6
   yahoofin: ^0.0.3
   dartz: 0.10.1
   equatable: ^2.0.5
   #connectivity_plus: ^2.3.6+1
   internet_connection_checker: ^0.0.1+4
+  google_fonts: ^3.0.1
+  router_management: ^3.1.0
+  syncfusion_flutter_charts: ^20.2.48
+
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  localization: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +51,8 @@ dev_dependencies:
   get_it: 7.2.0
   http: 0.13.5
   syncfusion_flutter_charts: ^20.2.48
+  auto_route_generator: ^5.0.1
+  build_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
